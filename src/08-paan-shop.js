@@ -47,16 +47,97 @@
  */
 export function createPaanOrder(basePaan, customizations) {
   // Your code here
+//   *   1. createPaanOrder(basePaan, customizations)
+//  *      - Object.assign({}, basePaan, customizations) se NEW order object banao
+//  *      - Original basePaan ko mutate MAT karo!
+//  *      - Agar basePaan object nahi hai ya null hai, return {}
+//  *      - Agar customizations object nahi hai, sirf basePaan ki copy return karo
+//  *      - Example: createPaanOrder({type:"meetha",price:30}, {extra:"gulkand",price:50})
+//  *                 => {type:"meetha", price:50, extra:"gulkand"}
+//  *
+  if (
+    typeof basePaan !== "object" ||
+    basePaan === null ||
+    Array.isArray(basePaan)
+  ) {
+    return {};
+  }
+
+  if (
+    typeof customizations !== "object" ||
+    customizations === null ||
+    Array.isArray(customizations)
+  ) {
+    return Object.assign({}, basePaan);
+  }
+
+  return Object.assign({}, basePaan, customizations);
 }
 
 export function freezeMenu(menu) {
   // Your code here
+//    *   2. freezeMenu(menu)
+//  *      - Object.freeze() se menu ko immutable banao
+//  *      - Return: frozen object
+//  *      - Agar menu object nahi hai ya null hai, return {}
+//  *      - Frozen ke baad koi modification kaam nahi karegi!
+//  *      - Example: const frozen = freezeMenu({meetha:30}); frozen.meetha = 100; // still 30
+if(typeof menu!=='object'|| menu===null){
+  return {}
+}
+return Object.freeze(menu)
 }
 
 export function updatePrices(menu, increase) {
   // Your code here
+//   *   3. updatePrices(menu, increase)
+//  *      - Object.entries() se [key, value] pairs lo
+//  *      - Har price mein increase add karo
+//  *      - Object.fromEntries() se wapas object banao
+//  *      - Return: NEW object (original mat badlo!)
+//  *      - Agar menu object nahi hai ya increase number nahi hai, return {}
+//  *      - Example: updatePrices({meetha:30, saada:20}, 10) => {meetha:40, saada:30}
+  if (
+    typeof menu !== 'object' ||
+    menu === null ||
+    typeof increase !== 'number'
+  ) {
+    return {};
+  }
+
+  return Object.fromEntries(
+    Object.entries(menu).map(
+      ([item, price]) => [item, price + increase]
+    )
+  );
 }
 
 export function mergeDailySpecials(regularMenu, specialsMenu) {
   // Your code here
+//    *   4. mergeDailySpecials(regularMenu, specialsMenu)
+//  *      - Spread operator {...regularMenu, ...specialsMenu} se merge karo
+//  *      - specialsMenu ki values override karengi agar same key ho
+//  *      - Return: NEW merged object
+//  *      - Agar koi bhi object nahi hai, usse empty {} maan lo
+//  *      - Example: mergeDailySpecials({meetha:30}, {chocolate:60, meetha:40})
+//  *                 => {meetha:40, chocolate:60}
+  if (
+    typeof regularMenu !== "object" ||
+    regularMenu === null
+  ) {
+    regularMenu = {};
+  }
+
+  if (
+    typeof specialsMenu !== "object" ||
+    specialsMenu === null
+  ) {
+    specialsMenu = {};
+  }
+
+  return {
+    ...regularMenu,
+    ...specialsMenu
+  };
 }
+
